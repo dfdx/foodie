@@ -2,6 +2,7 @@ import dill
 from pathlib import Path
 import torch
 from torch import nn
+from torch import optim
 from torch.nn import functional as F
 from torch.nn.modules.distance import CosineSimilarity
 from torchvision import models
@@ -53,27 +54,30 @@ def main_old():
 
 
 FOOD101_IMG_PATH = Path("~/data/food-101/images").expanduser()
+OWN_IMG_PATH = Path("~/data/foodie/own").expanduser()
 MODEL_PATH = Path("~/models/foodie_e86.pkl").expanduser()
 
 
 def try_untrained():
-    dataset = TripletImageFolder(FOOD101_IMG_PATH)
+    # dataset = TripletImageFolder(FOOD101_IMG_PATH)
+    dataset = TripletImageFolder(OWN_IMG_PATH)
     embed = EmbeddingResnet().to(device)
     sim = CosineSimilarity()
-    a, b, c = map(lambda x: x.unsqueeze(0).to(device), dataset[1001])
+    a, b, c = map(lambda x: x.unsqueeze(0).to(device), dataset[2])
     print(f"sim(a,b) = {sim(embed(a), embed(b)).item()}")
     print(f"sim(a,c) = {sim(embed(a), embed(c)).item()}")
     print(f"sim(b,c) = {sim(embed(b), embed(c)).item()}")
 
 
 def main():
-    dataset = TripletImageFolder(FOOD101_IMG_PATH)
+    dataset = TripletImageFolder(OWN_IMG_PATH)
     trainset, testset = train_test_loader(dataset, batch_size=1)
     model = TripletNet(EmbeddingResnet()).to(device)
     loss_function = TripletLoss(1.0)
-    train(model, trainset, testset, loss_function)
-    MODEL_PATH.parents[0].mkdirs(exist_ok=True)
-    torch.save(model, MODEL_PATH, pickle_module=dill)
+    optimizer = optim.Adam(model.parameters(), lr=1e-5)
+    train(model, trainset, testset, loss_function, optimizer=optimizer)
+    # MODEL_PATH.parents[0].mkdirs(exist_ok=True)
+    # torch.save(model, MODEL_PATH, pickle_module=dill)
 
 
 def similarity(model, dataset, i, j):
@@ -101,3 +105,45 @@ def try_trained():
     print(f"sim(a,b) = {sim(a, b).item()}")
     print(f"sim(a,c) = {sim(a, c).item()}")
     print(f"sim(b,c) = {sim(b, c).item()}")
+
+
+# def train(model, trainset, testset, loss_function, optimizer=None, n_epochs=100, tboard=False, saveto=None):
+#     optimizer = optimizer or optim.SGD(model.parameters(), lr=1e-6)
+#     if tboard:
+#         # don't forget to run `tensorboard --logdir=logs` from this dir
+#         tensorboard = Tensorboard("tboard/logs")
+#     # min_error = test(model, testset, loss_function)
+#     for epoch in range(n_epochs):
+#         batch_losses = []
+#         for i, xs in enumerate(trainset, 1):
+#             xs = [x.to(device) for x in xs]
+#             # reset gradients and hidden state
+#             model.zero_grad()           
+#             # run forward pass
+#             emb = model(*xs)
+#             # compute the loss and backpropagate gradients
+#             loss = loss_function(*emb)
+#             if tboard:
+#                 tensorboard.log_scalar("loss", loss.item(), epoch * len(trainset.dataset) + i)
+#             batch_losses.append(loss.item())
+#             if i % 100 == 0:
+#                 log.info(f'Epoch {epoch}; iter {i}/{len(trainset.dataset)}; '
+#                          f'avg batch loss = {np.mean(batch_losses)}')
+#                 batch_losses = []
+#             loss.backward()
+#             optimizer.step()
+#         # if (epoch + 1) % 5 == 0:
+#         #     error = test(model, trainset, loss_function)
+#         #     log.info(f"On train data: loss = {error}")
+#         #     error = test(model, testset, loss_function)
+#         #     log.info(f"On test data: loss = {error}")
+#         #     if error < min_error:
+#         #         log.info("New min error, saving the model")
+#         #         min_error = error
+#         #         if saveto:
+#         #             torch.save(model, saveto, pickle_module=dill)
+#     return model
+
+
+# def main2():
+    

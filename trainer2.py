@@ -19,6 +19,7 @@ def train(model, trainset, testset, loss_function, optimizer=None, n_epochs=100,
         tensorboard = Tensorboard("mdn/logs")
     # min_error = test(model, testset, loss_function)
     for epoch in range(n_epochs):
+        print(f"==== Epoch: {epoch} ====")
         batch_losses = []
         for i, xs in enumerate(trainset, 1):
             xs = [x.to(device) for x in xs]
@@ -37,6 +38,7 @@ def train(model, trainset, testset, loss_function, optimizer=None, n_epochs=100,
                 batch_losses = []
             loss.backward()
             optimizer.step()
+        print(f"Avg loss: {np.mean(batch_losses)}")    
         # if (epoch + 1) % 5 == 0:
         #     error = test(model, trainset, loss_function)
         #     log.info(f"On train data: loss = {error}")
