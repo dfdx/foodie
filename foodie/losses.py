@@ -6,7 +6,8 @@ import torch.nn.functional as F
 class ContrastiveLoss(nn.Module):
     """
     Contrastive loss
-    Takes embeddings of two samples and a target label == 1 if samples are from the same class and label == 0 otherwise
+    Takes embeddings of two samples and a target label == 1
+    if samples are from the same class and label == 0 otherwise
     """
 
     def __init__(self, margin):
@@ -24,7 +25,8 @@ class ContrastiveLoss(nn.Module):
 class TripletLoss(nn.Module):
     """
     Triplet loss
-    Takes embeddings of an anchor sample, a positive sample and a negative sample
+    Takes embeddings of an anchor sample,
+    a positive sample and a negative sample
     """
 
     def __init__(self, margin):
@@ -42,7 +44,8 @@ class OnlineContrastiveLoss(nn.Module):
     """
     Online Contrastive loss
     Takes a batch of embeddings and corresponding labels.
-    Pairs are generated using pair_selector object that take embeddings and targets and return indices of positive
+    Pairs are generated using pair_selector object that
+    take embeddings and targets and return indices of positive
     and negative pairs
     """
 
@@ -68,7 +71,8 @@ class OnlineTripletLoss(nn.Module):
     """
     Online Triplets loss
     Takes a batch of embeddings and corresponding labels.
-    Triplets are generated using triplet_selector object that take embeddings and targets and return indices of
+    Triplets are generated using triplet_selector object
+    that take embeddings and targets and return indices of
     triplets
     """
 

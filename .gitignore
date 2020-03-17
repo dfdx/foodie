@@ -2,5 +2,8 @@
 \#*
 *.pyc
 __pycache__/
+images/*
+*.jpg
+*.png
 log.txt
 venv

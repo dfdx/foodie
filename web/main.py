@@ -83,7 +83,7 @@ app.add_routes([web.get("/", index),
 def start():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(asyncio.new_event_loop())
-    web.run_app(app)
+    web.run_app(app, port=80)
 
 
 if __name__ == '__main__':

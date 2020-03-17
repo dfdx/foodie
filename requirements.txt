@@ -1,0 +1,6 @@
+torch
+torchvision
+aiohttp
+aiohttp_jinja2
+black
+flake8

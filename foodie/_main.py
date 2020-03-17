@@ -8,10 +8,10 @@ from torch.nn.modules.distance import CosineSimilarity
 from torchvision import models
 from torchvision.datasets import ImageFolder
 from torchvision import transforms
-from datasets import TripletImageFolder
-from utils import imshow, train_test_loader
-from trainer2 import train
-from losses import TripletLoss
+from foodie.datasets import TripletImageFolder
+from foodie.utils import imshow, train_test_loader
+from foodie.trainer2 import train
+from foodie.losses import TripletLoss
 
 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -46,16 +46,19 @@ class TripletNet(nn.Module):
         return self.embedding_net(x)
 
 
+# TODO:
+# 1. move models to foodie.model
+# 2. use TripletNet for trainin, but only EmbeddingNet for embedding
+# 3. add utilities for transorming images during loading + check/transforming during embedding
 
+    
 def main_old():
     embed = EmbeddingResnet().to(device)
     x = torch.rand(1, 3, 214, 214).to(device)
     y = embed(x)
 
 
-FOOD101_IMG_PATH = Path("~/data/food-101/images").expanduser()
-OWN_IMG_PATH = Path("~/data/foodie/own").expanduser()
-MODEL_PATH = Path("~/models/foodie_e86.pkl").expanduser()
+
 
 
 def try_untrained():

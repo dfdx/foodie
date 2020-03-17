@@ -5,7 +5,7 @@ from pathlib import Path
 import torch
 from torch.utils import data
 from torchvision import transforms
-from utils import imshow
+from foodie.utils import imshow
 
 
 def default_image_loader(path):
