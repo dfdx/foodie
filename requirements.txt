@@ -1,6 +1,10 @@
 torch
 torchvision
-aiohttp
-aiohttp_jinja2
+Pillow
 black
 flake8
+# aiohttp
+aiohttp
+aiohttp_jinja2
+# flask
+flask

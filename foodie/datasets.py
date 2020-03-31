@@ -32,7 +32,7 @@ class TripletImageFolder(torch.utils.data.Dataset):
                 such_imgs.append(img_path)
             self.imgs[label] = such_imgs
         self.triplets = []
-        labels = list(self.imgs.keys())        
+        labels = list(self.imgs.keys())
         for label in labels:
             img_paths = list(self.imgs[label])
             for img_path in img_paths:

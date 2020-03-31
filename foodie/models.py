@@ -1,13 +1,10 @@
-import dill
 from pathlib import Path
 import numpy as np
 import torch
 from torch import nn
 from torch import optim
 from torch.nn import functional as F
-from torch.nn.modules.distance import CosineSimilarity
 from torchvision import models
-from torchvision import transforms
 from foodie.datasets import TripletImageFolder
 from foodie.utils import train_test_loader
 from foodie.losses import TripletLoss
@@ -41,7 +38,8 @@ class EmbeddingNet(nn.Module):
         torch.save(self.state_dict(), path)
 
     def load(self, path):
-        self.load_state_dict(torch.load(path))
+        self.load_state_dict(torch.load(path, map_location=device))
+        return self
 
 
 class TripletNet(nn.Module):

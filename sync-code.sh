@@ -1,2 +1,2 @@
 #!/bin/bash
-rsync -zhav --exclude venv . foodie:work/foodie/
+rsync -zhav --exclude venv . foodie:work/foodie/ --delete
